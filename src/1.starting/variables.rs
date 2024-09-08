@@ -99,7 +99,32 @@ fn main() {
   let second = array[1];
   println!("The value of first is: {}", first);
   println!("The value of second is: {}", second);
+
+  let defined_array : [i32; 5] = [1, 2, 3, 4, 5];
+  println!("The value of defined_array is: {:?}", defined_array);
+  let _array_of_zeros : [i32; 5] = [0; 5];
+
   
+  // ======================== VECTOR TYPE ========================
+
+  // Declare vector, initialize with three values
+  let three_nums = vec![15, 3, 46];
+  println!("Initial vector: {:?}", three_nums);  
+    
+  // Declare vector, value = "0", length = 5
+  let zeroes = vec![0; 5];
+  println!("Zeroes: {:?}", zeroes); 
+
+  // Create empty vector, declare vector mutable so it can grow and shrink
+  let mut fruit = Vec::new();
+  // Push values onto end of vector, type changes from generic `T` to String
+  fruit.push("Apple");
+  fruit.push("Banana");
+  fruit.push("Cherry");
+  println!("Fruits: {:?}", fruit);
+  // Remove last element from vector
+  fruit.pop();
+  println!("Fruits: {:?}", fruit);
 
   // ======================== STRUCT TYPE ========================
   // Rust has a struct type to define custom data types
@@ -162,5 +187,68 @@ fn main() {
   println!("The value of field1 is: {}", classic.field1);
   println!("The value of field2 is: {}", classic.field2);
   println!("The value of field3 is: {}", classic.field3);
+
+  // ======================== ENUM TYPE ========================
+  // Enums are types that can be any one of several variants. What Rust calls enums are more commonly known as algebraic data types. 
+  // The important detail is that each enum variant can have data to go along with it.
+ 
+  // enum WebEvent {
+  //   // An enum variant can be like a unit struct without fields or data types
+  //   WELoad,
+  //   // An enum variant can be like a tuple struct with data types but no named fields
+  //   WEKeys(String, char),
+  //   // An enum variant can be like a classic struct with named fields and their data types
+  //   WEClick { x: i64, y: i64 }
+  // }
+
+  //   The enum in our example has three variants of different types:
+  //   > WELoad has no associated data type or data.
+  //   > WEKeys has two fields with data types String and char.
+  //   > WEMClick contains an anonymous struct with named fields x and y, and their data types (i64).
+
+
+  // We define an enum with variants similar to how we define different kinds of struct types. 
+  // All the variants are grouped together in the same WebEvent enum type. Each variant in the enum isn't its own type.
+  // Any function that uses a variant of the WebEvent enum must accept all the variants in the enum. We can't have a function that accepts only the WEClick variant, 
+  // but not the other variants.
+
+  // Define a tuple struct
+  struct KeyPress(String, char);
+
+  // Define a classic struct
+  struct MouseClick { _x: i64, _y: i64 }
+
+  // Redefine the enum variants to use the data from the new structs
+  // Update the page Load variant to have the boolean type
+  enum WebEvent { 
+    WELoad(bool), 
+    WEClick(MouseClick),
+    WEKeys(KeyPress) }
+
+  let _we_load = WebEvent::WELoad(true);
+  // Instantiate a KeyPress tuple and bind the key values
+  let _keys = KeyPress(String::from("Ctrl+"), 'N');
+  // Set the WEKeys variant to use the data in the keys tuple
+  let _we_key = WebEvent::WEKeys(_keys);
+  let _click = WebEvent::WEClick(MouseClick{ _x: 100, _y: 250 });
+
+
+  // ======================== HASHMAP TYPE ========================
+  // Rust has a standard library type, HashMap, that is a key-value store
+  // HashMaps are useful when you want to store data that can be looked up by a key
+
+  // Import the HashMap type from the standard library
+  use std::collections::HashMap;
+  let mut reviews: HashMap<String, String> = HashMap::new();
+  
+  reviews.insert(String::from("Ancient Roman History"), String::from("Very accurate."));
+  reviews.insert(String::from("Cooking with Rhubarb"), String::from("Sweet recipes."));
+  reviews.insert(String::from("Programming in Rust"), String::from("Great examples."));
+
+  println!("Reviews: {:?}", reviews);
+  println!("Review for Ancient Roman History: {:?}", reviews.get("Ancient Roman History"));
+
+  reviews.remove("Cooking with Rhubarb");
+  println!("Reviews: {:?}", reviews);
 
 }
